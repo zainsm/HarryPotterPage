@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* Page Styling */
+body {
+  margin: 0;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.center {
+  text-align: center;
+}
+
+/* Navigation Bar*/
+.topnavigationbar {
+  overflow: hidden;
+  background-color: #740001;
+}
+
+.topnavigationbar a {
+  float: left;
+  color: #d3a625;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnavigationbar a:hover {
+  background-color: #ffffff;
+  color: #740001;
+}
+
+
+.topnavigationbar a.split {
+  float: right;
+  background-color: #d3a625;
+  color: #740001;
+}
+
+/* Sign Up / Sign In Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+  }
+
+  .modal-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #d3a625;
+  }
+
+  .modal-body input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .modal-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-footer button {
+    padding: 10px 20px;
+    background-color: #d3a625;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .modal-footer button:hover {
+    background-color: #d3a625;
+  }
+
+  .redirect-link {
+    color: #d3a625;
+    text-decoration: none;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .redirect-link:hover {
+    text-decoration: underline;
+  }
+
+  .message-modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 2px solid #d3a625;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .message-modal button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #d3a625;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+  }
+
+ /* After Sign in Drop Down Menu*/   
+  #dropdownMenu {
+    position: absolute;
+    right: 16px;
+    top: 50px;
+    background-color: #0C0B13;
+    color: #d3a625;
+    border: 1px solid #d3a625;
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  #dropdownMenu a {
+    text-decoration: none;
+    color: #d3a625;
+    padding: 5px 10px;
+  }
+
+  #dropdownMenu a:hover {
+    background-color: #d3a625;
+    color: white;
+  }
+
+/* Footer*/
+.BottomPage {
+       position: fixed;
+       left: 0;
+       bottom: 0;
+       width: 100%;
+       background-color: #740001;
+       color: #664EAE;
+       text-align: center;
+       font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+       font-size: 17px;
+}
+
+/* Quiz Boxes*/
+.quiz-container {
+  margin: 20px;
+}
+
+.question-block {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #740001;
+  background-color: #740001;
+  color: #d3a625;
+}
+
+.question {
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  height: 20%;
+}
+
+.image2 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+  height: 30%;
+}
+
+/* Answer Block Replacment*/
+.answer {
+  display: block;
+  background-color: #740001;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #d3a625;
+  cursor: pointer;
+  text-align: left;
+}
+
+.answer:hover {
+  background-color: #e0e0e0;
+}
+
+.correct {
+  background-color: #28a745 !important;
+  color: #ffffff;
+}
+
+.wrong {
+  background-color: #dc3545 !important;
+  color: #ffffff;
+}
+
+.feedback {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.correct-text {
+  color: #d3a625;
+}
+
+.wrong-text {
+  color: #372e29;
+}
+
+/* Introduction Section*/
+.header-section {
+  background-color: #372e29;
+  padding: 10px;
+  text-align: center;
+  font-size: 30px;
+  color: #d3a625;
+}
+
+.text-area {
+  padding: 10px;
+  font-size: 18px;
+  line-height: 1.5;
+  background-color: #372e29;
+  text-align: center;
+  color: #d3a625;
+}
+
+/* Bottom Results Box (Time & Score)*/
+.results-container {
+  text-align: center;
+  font-size: 24px;
+  color: #d3a625;
+  margin: 50px auto;
+  display: none;
+  padding: 20px;
+  background-color: #372e29;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.results-container p {
+  margin: 10px 0;
+}
+
+</style>
+</head>
+<body style="background-color:#372e29;">
+
+<!-- Navigation Bar -->
+<div class="topnavigationbar">
+  <a class="active" href="Homepage.html">Home</a>
+  <a href="QuizPage.html">Quiz's</a>
+  <a href="#" class="split" id="signupBtn">Sign Up</a>
+  <a href="#" class="split" id="userMenu" style="display: none;">
+    <span id="usernameDisplay"></span>
+  </a>
+  <div id="dropdownMenu">
+    <a href="#" onclick="showAccountInfo()">Account</a>
+    <a href="#" onclick="signOut()">Sign Out</a>
+  </div>
+</div>
+
+<div class="header-section">
+  <h1>Harry Potter Quiz</h1>
+</div>
+
+<div class="text-area">
+  <p style="color:#d3a625;">Step into the magical world of Hogwarts, where your knowledge of spells, potions, and fantastical creatures will be put to the test! Whether you’re a dedicated Potterhead or just a curious Muggle, this quiz will challenge your memory, wit, and love for J.K. Rowling’s enchanting series.</p>
+</div>
+
+<div class="quiz-container" id="quiz-container"></div>
+
+<div class="results-container" id="results-container">
+  <!-- This section is dynamically updated by JavaScript -->
+</div>
+
+<!-- Sign In/Sing Up Models -->
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">Sign Up</div>
+    <div class="modal-body">
+      <label for="signup-username">Username</label>
+      <input type="text" id="signup-username" placeholder="Enter your username">
+      <span id="signup-username-error" class="error-message"></span>
+      <label for="signup-password">Password</label>
+      <input type="password" id="signup-password" placeholder="Enter your password">
+      <span id="signup-password-error" class="error-message"></span>
+      <label for="confirm-password">Confirm Password</label>
+      <input type="password" id="confirm-password" placeholder="Confirm your password">
+      <span id="confirm-password-error" class="error-message"></span>
+    </div>
+    <div class="modal-footer">
+      <button onclick="handleSignUp()">Sign Up</button>
+      <a href="#" class="redirect-link" onclick="showSignIn()">Already have an account? Sign In</a>
+    </div>
+  </div>
+</div>
+
+<div id="signinModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">Sign In</div>
+    <div class="modal-body">
+      <label for="signin-username">Username</label>
+      <input type="text" id="signin-username" placeholder="Enter your username">
+      <span id="signin-username-error" class="error-message"></span>
+      <label for="signin-password">Password</label>
+      <input type="password" id="signin-password" placeholder="Enter your password">
+      <span id="signin-password-error" class="error-message"></span>
+    </div>
+    <div class="modal-footer">
+      <button onclick="handleSignIn()">Sign In</button>
+      <a href="#" class="redirect-link" onclick="showSignUp()">Don't have an account? Sign Up</a>
+    </div>
+  </div>
+</div>
+
+<!-- Account Modal -->
+<div id="accountModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">Account Information</div>
+    <div class="modal-body">
+      <p><strong>Username:</strong> <span id="accountUsername"></span></p>
+      <p><strong>Password:</strong></p>
+      <input type="password" id="accountPassword" readonly>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeModal('accountModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="messageModal" class="message-modal">
+  <div id="messageText"></div>
+  <button id="messageOkButton" onclick="closeMessage()" style="display: none;">OK</button>
+</div>
+
+<!-- Footer -->
+<div class="BottomPage">
+  <p style="color: #0084fE;">A Zain Project</p>
+</div>
+
+<!-- Footer -->
+<div class="BottomPage">
+  <p style="color: #d3a625;">A Zain Project</p>
+</div>
+
+<script>
+  // Question bank
+  const questions = [
+  {
+    question: "What house is Harry Potter sorted into?",
+    answers: [
+      { text: "Hufflepuff", correct: false },
+      { text: "Ravenclaw", correct: false },
+      { text: "Slytherin", correct: false },
+      { text: "Gryffindor", correct: true }
+    ]
+  },
+  {
+    question: "What position does Harry play on the Quidditch team?",
+    answers: [
+      { text: "Chaser", correct: false },
+      { text: "Beater", correct: false },
+      { text: "Keeper", correct: false },
+      { text: "Seeker", correct: true }
+    ]
+  },
+  {
+    question: "What is the name of Harry's pet owl?",
+    answers: [
+      { text: "Errol", correct: false },
+      { text: "Hedwig", correct: true },
+      { text: "Pigwidgeon", correct: false },
+      { text: "Crookshanks", correct: false }
+    ]
+  },
+  {
+    question: "What platform does the Hogwarts Express leave from?",
+    answers: [
+      { text: "Platform 9", correct: false },
+      { text: "Platform 10", correct: false },
+      { text: "Platform 9 ¾", correct: true },
+      { text: "Platform 8 ¾", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of Voldemort’s snake?",
+    answers: [
+      { text: "Nagini", correct: true },
+      { text: "Aragog", correct: false },
+      { text: "Basilisk", correct: false },
+      { text: "Norbert", correct: false }
+    ]
+  },
+  {
+    question: "What does the Marauder's Map show?",
+    answers: [
+      { text: "The Forbidden Forest", correct: false },
+      { text: "The Room of Requirement", correct: false },
+      { text: "Hogwarts and its inhabitants", correct: true },
+      { text: "Diagon Alley", correct: false }
+    ]
+  },
+  {
+    question: "What spell is used to disarm an opponent?",
+    answers: [
+      { text: "Expelliarmus", correct: true },
+      { text: "Stupefy", correct: false },
+      { text: "Avada Kedavra", correct: false },
+      { text: "Lumos", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of Hermione's cat?",
+    answers: [
+      { text: "Fang", correct: false },
+      { text: "Scabbers", correct: false },
+      { text: "Crookshanks", correct: true },
+      { text: "Trevor", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of the tree that attacks people near the Hogwarts grounds?",
+    answers: [
+      { text: "Whomping Willow", correct: true },
+      { text: "Giant Sequoia", correct: false },
+      { text: "Forbidden Oak", correct: false },
+      { text: "Barking Birch", correct: false }
+    ]
+  },
+  {
+    question: "What magical object shows the deepest desires of one's heart?",
+    answers: [
+      { text: "Mirror of Erised", correct: true },
+      { text: "The Pensieve", correct: false },
+      { text: "The Philosopher's Stone", correct: false },
+      { text: "The Sorting Hat", correct: false }
+    ]
+  },
+  {
+    question: "Who is the headmaster of Hogwarts when Harry first attends?",
+    answers: [
+      { text: "Severus Snape", correct: false },
+      { text: "Minerva McGonagall", correct: false },
+      { text: "Albus Dumbledore", correct: true },
+      { text: "Gilderoy Lockhart", correct: false }
+    ]
+  },
+  {
+    question: "What creature is guarding the Sorcerer’s Stone?",
+    answers: [
+      { text: "A dragon", correct: false },
+      { text: "Fluffy, a three-headed dog", correct: true },
+      { text: "A basilisk", correct: false },
+      { text: "A troll", correct: false }
+    ]
+  },
+  {
+    question: "Who was Harry's godfather?",
+    answers: [
+      { text: "Remus Lupin", correct: false },
+      { text: "Sirius Black", correct: true },
+      { text: "Alastor Moody", correct: false },
+      { text: "Rubeus Hagrid", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of the Wizarding newspaper?",
+    answers: [
+      { text: "The Daily Prophet", correct: true },
+      { text: "The Quibbler", correct: false },
+      { text: "The Hogwarts Gazette", correct: false },
+      { text: "The Magic Times", correct: false }
+    ]
+  },
+  {
+    question: "What shape is Harry's scar?",
+    answers: [
+      { text: "Circle", correct: false },
+      { text: "Lightning bolt", correct: true },
+      { text: "Star", correct: false },
+      { text: "Sword", correct: false }
+    ]
+  },
+  {
+    question: "What house is Draco Malfoy sorted into?",
+    answers: [
+      { text: "Ravenclaw", correct: false },
+      { text: "Gryffindor", correct: false },
+      { text: "Slytherin", correct: true },
+      { text: "Hufflepuff", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of the train that takes students to Hogwarts?",
+    answers: [
+      { text: "Hogwarts Flyer", correct: false },
+      { text: "The Magic Express", correct: false },
+      { text: "Hogwarts Express", correct: true },
+      { text: "Wizard Train", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of the Weasley family home?",
+    answers: [
+      { text: "The Burrow", correct: true },
+      { text: "Shell Cottage", correct: false },
+      { text: "Godric's Hollow", correct: false },
+      { text: "Hogsmeade", correct: false }
+    ]
+  },
+  {
+    question: "What kind of magical creature is Dobby?",
+    answers: [
+      { text: "Hippogriff", correct: false },
+      { text: "Goblin", correct: false },
+      { text: "House-elf", correct: true },
+      { text: "Troll", correct: false }
+    ]
+  },
+  {
+    question: "What is the killing curse in the wizarding world?",
+    answers: [
+      { text: "Avada Kedavra", correct: true },
+      { text: "Crucio", correct: false },
+      { text: "Imperio", correct: false },
+      { text: "Sectumsempra", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of Harry’s wand core?",
+    answers: [
+      { text: "Dragon heartstring", correct: false },
+      { text: "Phoenix feather", correct: true },
+      { text: "Unicorn hair", correct: false },
+      { text: "Thestral hair", correct: false }
+    ]
+  },
+  {
+    question: "What is Hermione’s patronus?",
+    answers: [
+      { text: "An otter", correct: true },
+      { text: "A hare", correct: false },
+      { text: "A cat", correct: false },
+      { text: "A deer", correct: false }
+    ]
+  },
+  {
+    question: "Who is the Half-Blood Prince?",
+    answers: [
+      { text: "Draco Malfoy", correct: false },
+      { text: "Severus Snape", correct: true },
+      { text: "Tom Riddle", correct: false },
+      { text: "Harry Potter", correct: false }
+    ]
+  },
+  {
+    question: "What does Hagrid love the most?",
+    answers: [
+      { text: "Pumpkin juice", correct: false },
+      { text: "Magical creatures", correct: true },
+      { text: "Giant spiders", correct: false },
+      { text: "Hogsmeade butterbeer", correct: false }
+    ]
+  },
+  {
+    question: "What form does Harry’s patronus take?",
+    answers: [
+      { text: "A lion", correct: false },
+      { text: "A stag", correct: true },
+      { text: "An owl", correct: false },
+      { text: "A snake", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of Voldemort’s real identity?",
+    answers: [
+      { text: "Tom Marvolo Riddle", correct: true },
+      { text: "Gellert Grindelwald", correct: false },
+      { text: "Lucius Malfoy", correct: false },
+      { text: "Salazar Slytherin", correct: false }
+    ]
+  },
+  {
+    question: "Which magical plant screams when uprooted?",
+    answers: [
+      { text: "Devil's Snare", correct: false },
+      { text: "Mandrake", correct: true },
+      { text: "Gillyweed", correct: false },
+      { text: "Whomping Willow", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of Fred and George's joke shop?",
+    answers: [
+      { text: "Weasleys' Wizard Wheezes", correct: true },
+      { text: "Zonko's Joke Shop", correct: false },
+      { text: "Magic Mischief Makers", correct: false },
+      { text: "The Laughing Cauldron", correct: false }
+    ]
+  },
+  {
+    question: "Which charm can summon objects?",
+    answers: [
+      { text: "Accio", correct: true },
+      { text: "Wingardium Leviosa", correct: false },
+      { text: "Alohomora", correct: false },
+      { text: "Obliviate", correct: false }
+    ]
+  },
+  {
+    question: "What potion allows someone to assume the form of another?",
+    answers: [
+      { text: "Polyjuice Potion", correct: true },
+      { text: "Felix Felicis", correct: false },
+      { text: "Amortentia", correct: false },
+      { text: "Veritaserum", correct: false }
+    ]
+  }
+];
+  
+  // Timer
+    let timerInterval;
+    let timeElapsed = 0;
+    let score = 0;
+    let questionsAnswered = 0;
+  
+  // Shuffle questions
+    function shuffleArray(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+  
+  // Starts The Timer
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeElapsed++;
+      }, 1000);
+    }
+  
+  // Stops The Timer
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+  
+  // Renders the questions from the array
+    function renderQuiz() {
+      const quizContainer = document.getElementById("quiz-container");
+      quizContainer.innerHTML = ""; // Clear existing questions
+  
+      const selectedQuestions = shuffleArray([...questions]).slice(0, 10); // Pick 10 random questions from the array
+  
+      selectedQuestions.forEach((questionObj, index) => {
+        const questionBlock = document.createElement("div");
+        questionBlock.className = "question-block";
+  
+        // Question text
+        const questionText = document.createElement("div");
+        questionText.className = "question";
+        questionText.innerText = `Question ${index + 1}: ${questionObj.question}`;
+        questionBlock.appendChild(questionText);
+  
+        // Answers
+        questionObj.answers.forEach(answer => {
+          const answerDiv = document.createElement("div");
+          answerDiv.className = "answer";
+          answerDiv.innerText = answer.text;
+          answerDiv.onclick = () => {
+            if (!timerInterval) startTimer();
+            questionsAnswered++;
+            if (answer.correct) {
+              score++;
+              questionBlock.innerHTML = `<div class="feedback correct-text">CORRECT</div>`;
+            } else {
+              questionBlock.innerHTML = `<div class="feedback wrong-text">WRONG</div>`;
+            }
+            if (questionsAnswered === selectedQuestions.length) {
+              stopTimer();
+              showResults(selectedQuestions.length);
+            }
+          };
+          questionBlock.appendChild(answerDiv);
+        });
+  
+        quizContainer.appendChild(questionBlock);
+      });
+    }
+  
+    function showResults(totalQuestions) {
+      const resultsContainer = document.getElementById("results-container");
+      resultsContainer.style.display = "block";
+      resultsContainer.innerHTML = `
+        <p>Your Score: ${score}/${totalQuestions}</p>
+        <p>Total Time: ${timeElapsed} seconds</p>
+      `;
+      resultsContainer.scrollIntoView({ behavior: "smooth" });
+    }
+  
+  // Load the quiz everytime a user refreshes 
+    window.onload = renderQuiz;
+  </script>
+
+  <!-- Java Code for Sign Up/Sign In Functions -->
+<script>
+  const signupModal = document.getElementById('signupModal');
+  const signinModal = document.getElementById('signinModal');
+  const messageModal = document.getElementById('messageModal');
+  const messageText = document.getElementById('messageText');
+  const messageOkButton = document.getElementById('messageOkButton');
+
+  document.getElementById('signupBtn').onclick = () => {
+    signupModal.style.display = 'flex';
+  };
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+  }
+
+  function closeMessage() {
+    messageModal.style.display = 'none';
+  }
+
+  function showSignIn() {
+    closeModal('signupModal');
+    signinModal.style.display = 'flex';
+  }
+
+  function showSignUp() {
+    closeModal('signinModal');
+    signupModal.style.display = 'flex';
+  }
+
+  function handleSignUp() {
+    const username = document.getElementById('signup-username').value.trim();
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    const usernameError = document.getElementById('signup-username-error');
+    const passwordError = document.getElementById('signup-password-error');
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+
+    let isValid = true;
+
+    usernameError.textContent = '';
+    passwordError.textContent = '';
+    confirmPasswordError.textContent = '';
+
+    if (!username) {
+      usernameError.textContent = 'Username is required.';
+      isValid = false;
+    }
+
+    if (!password) {
+      passwordError.textContent = 'Password is required.';
+      isValid = false;
+    } else if (password.length < 6) {
+      passwordError.textContent = 'Password must be at least 6 characters.';
+      isValid = false;
+    }
+
+    if (!confirmPassword) {
+      confirmPasswordError.textContent = 'Please confirm your password.';
+      isValid = false;
+    } else if (confirmPassword !== password) {
+      confirmPasswordError.textContent = 'Passwords do not match.';
+      isValid = false;
+    }
+
+    if (isValid) {
+      localStorage.setItem('username', username);
+      localStorage.setItem('password', password);
+      closeModal('signupModal');
+      messageText.textContent = 'You are now signed up! Please sign in.';
+      messageModal.style.display = 'block';
+      messageOkButton.style.display = 'inline-block';
+      messageOkButton.onclick = () => {
+        messageModal.style.display = 'none';
+        signinModal.style.display = 'flex';
+      };
+    }
+  }
+
+  function handleSignIn() {
+    const username = document.getElementById('signin-username').value.trim();
+    const password = document.getElementById('signin-password').value;
+
+    const usernameError = document.getElementById('signin-username-error');
+    const passwordError = document.getElementById('signin-password-error');
+
+    let isValid = true;
+
+    usernameError.textContent = '';
+    passwordError.textContent = '';
+
+    if (!username) {
+      usernameError.textContent = 'Username is required.';
+      isValid = false;
+    }
+
+    if (!password) {
+      passwordError.textContent = 'Password is required.';
+      isValid = false;
+    }
+
+    if (isValid) {
+      const storedUsername = localStorage.getItem('username');
+      const storedPassword = localStorage.getItem('password');
+
+      if (username === storedUsername && password === storedPassword) {
+        closeModal('signinModal');
+        updateNavigation(username);
+        messageText.textContent = `Welcome, ${username}!`;
+        messageModal.style.display = 'block';
+        messageOkButton.style.display = 'none';
+        setTimeout(() => {
+          messageModal.style.display = 'none';
+        }, 2000);
+      } else {
+        messageText.textContent = 'Incorrect username or password!';
+        messageModal.style.display = 'block';
+        messageOkButton.style.display = 'none';
+        setTimeout(() => {
+          messageModal.style.display = 'none';
+        }, 2000);
+      }
+    }
+  }
+
+  function updateNavigation(username) {
+    const signupBtn = document.getElementById('signupBtn');
+    const userMenu = document.getElementById('userMenu');
+    const usernameDisplay = document.getElementById('usernameDisplay');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    signupBtn.style.display = 'none';
+    userMenu.style.display = 'inline-block';
+    usernameDisplay.textContent = username;
+
+    userMenu.onclick = () => {
+      dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
+    };
+
+    window.onclick = (event) => {
+      if (!userMenu.contains(event.target)) {
+        dropdownMenu.style.display = 'none';
+      }
+    };
+  }
+
+  function showAccountInfo() {
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+
+    document.getElementById('accountUsername').textContent = username;
+    document.getElementById('accountPassword').value = password;
+
+    document.getElementById('accountModal').style.display = 'flex';
+  }
+
+  function signOut() {
+    document.getElementById('signupBtn').style.display = 'inline-block';
+    document.getElementById('userMenu').style.display = 'none';
+    document.getElementById('dropdownMenu').style.display = 'none';
+
+    messageText.textContent = 'You have signed out.';
+    messageModal.style.display = 'block';
+    messageOkButton.style.display = 'none';
+
+    setTimeout(() => {
+      messageModal.style.display = 'none';
+    }, 2000);
+  }
+</script>
+  
+  </body>
+  </html>
+  
